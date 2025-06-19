@@ -32,15 +32,6 @@ preprocessed_descriptions.csv
     
 
 def fls2():
-    '''Задайте одномерный массив аг1 размерности, состоящий из 10 случайных целых чисел в пределах от 0 до 15. Получите массив индексов, отсортированных по убыванию элементов массива. Выведите на печать массив 1 с отсортированными элементами. Решить задачу средствами numpy и/или pandas. Не использовать циклы и конструкции стандартного Python там, где можно использовать возможности данных библиотек.'''
-    print("""import numpy as np
-arr1 = np.random.randint(0, 16, size = 10)
-sorted_indices = np.argsort(arr1)[::-1]
-sorted_arr = arr1[sorted_indices]
-print(arr1)
-print(sorted_arr)""")
-
-def fls3():
     '''В файле 'average_ratings.npy содержится информация о среднем рейтинге 3 рецептов за период с 01.01.2019 по 30.12.2021. При помощи пакета 'matplotlib в одной системе координат (на одной картинке) изобразите три временных ряда, соответствующих средним рейтингам этих рецептов'''
     print("""import numpy as np
 import matplotlib.pyplot as plt
@@ -62,7 +53,7 @@ plt.show()
     """)
 
 
-def fls4():
+def fls3():
     '''Напишите регулярное выражение, которое ищет в приведенном ниже тексте нумерацию, затем точку, затем первое слово после точки.'''
     print("""import re
 
@@ -86,7 +77,7 @@ pattern = r"(\d+\.\s*\w+)"
 matches = re.findall(pattern, text)
 print(matches)""")
     
-def fls5():
+def fls4():
     '''НВ файле 'average ratings.npy содержится информация о среднем рейтинге 3 рецептов за период с 01.01.2019 по 30.12.2021. При помощи пакета 'matplotlib в одной системе координат (на одной картинке) изобразите три временных ряда, соответствующих средним рейтингам этих рецептов.'''
     print("""import numpy as np
 import matplotlib.pyplot as plt
@@ -106,7 +97,7 @@ plt.legend()
 plt.tight_layout()  
 plt.show()""")    
 
-def fls6():
+def fls5():
     '''При помощи объединения таблиц, создайте DataFrame, состоящий из четырех столбцов: id, name, date, review. Рецепты без отзывов должны отсутствовать в данной таблице. Создайте новый DataFrame, состоящий их записей не старше 2015 года и состоящий из двух столбцов, где первый это id рецепта, а второй - столбец, хранящий количество отзывов на рецепт.'''
     print("""data = {
     'id': [1, 1, 2, 3, 3, 3, 4, 5],  # У рецептов 1 и 3 по несколько отзывов
@@ -119,7 +110,7 @@ df = pd.DataFrame(data).dropna(subset=['review'])
 print("Исходный DataFrame (без рецептов без отзывов):")
 print(df)""")   
     
-def fls7():
+def fls6():
     '''Загрузите названия рецептов из файла
 ргеprocessed_descriptions.csv
 (первая колонка). Получите набор уникальных слов в названиях. Получите набор из 5 ближайших слов к слову "black'. (Близость слов измеряется с помощью расстояния Левенштейна).'''
@@ -146,7 +137,7 @@ print(targer_word)
 for word, dist in closest_words:
     print(word, dist)""")   
 
-def fls8():
+def fls7():
     '''Постройте кривые синуса, косинуса, тангенса, функции х в квадрате их в кубе на четырех графиках в два ряда и два столбца, задайте им разные цвета и стили линий. Задайте решетку и общий заголовок.'''
     print("""import matplotlib.pyplot as plt
 
@@ -202,7 +193,7 @@ axs[1, 1].legend()
 plt.tight_layout(rect=[0, 0, 1, 0.96])
 plt.show()""")   
     
-def fls9():
+def fls8():
     '''По данным файл steps_sample.xml сформируйте словарь с шагами по каждому рецепту вида {id рецепта: ["шаг\", \"шаг2\"]}'. Сохраните этот словарь в файл
 steps_sample.json'''
     print("""import xml.etree.ElementTree as ET
@@ -226,7 +217,7 @@ xml_file = 'steps_sample.xml'
 json_file = 'steps_sample.json'
 process_xml(xml_file, json_file)""")   
     
-def fls10():
+def fls9():
     '''В файле 'average_ratings.ру содержится информация о среднем рейтинге 3 рецептов за период с 01.01.2019 по 30.12.2021. При помощи пакета 'matplotlib в одной системе координат (на одной картинке) изобразите три временных ряда, соответствующих средним рейтингам этих рецептов.'''
     print("""import numpy as np
 import matplotlib.pyplot as plt
@@ -251,7 +242,7 @@ plt.xticks(rotation = 45)
 plt.tight_layout()
 plt.show()""")   
     
-def fls11():
+def fls10():
     '''Файл 'minutes_n_ingredients.csv содержит информацию об идентификаторе рецепта, времени его выполнения в минутах и количестве необходимых ингредиентов. Считайте данные из этого файла в виде массива 'numpy типа 'int32, используя np.loadtxt'.
 Выведите на экран первые 5 строк массива.'''
     print("""import numpy as np
@@ -259,7 +250,7 @@ def fls11():
 data = np.loadtxt('minutes_n_ingredients.csv', delimiter = ',', dtype = np.int32)
 print(data[:5])""")      
     
-def fls12():
+def fls11():
     '''В файле average_ratings.npy содержится информация о среднем рейтинге 3 рецептов за период с 01.01.2019 по 30.12.2021. При помощи пакета 'matplotlib в одной системе координат (на одной картинке) изобразите три временных ряда, соответствующих средним рейтингам этих рецептов.'''
     print("""import xml.etree.ElementTree as ET
 import json
@@ -282,7 +273,7 @@ xml_file = 'steps_sample.xml'
 json_file = 'steps_sample.json'
 process_xml(xml_file, json_file)""") 
     
-def fls13():
+def fls12():
     '''По данным из файла 'addres-book-q.xml сформировать список словарей с телефонами
 каждого из людей.'''
     print("""import xml.etree.ElementTree as ET
@@ -301,4 +292,4 @@ def process_xml(xml_file):
 xml_file = 'addres-book-q.xml'
 process_xml(xml_file)""") 
     
-FLS = [fls1,fls2,fls3,fls4,fls5,fls6,fls7,fls8,fls9,fls10,fls11,fls12,fls13]
+FLS = [fls1,fls2,fls3,fls4,fls5,fls6,fls7,fls8,fls9,fls10,fls11,fls12]
