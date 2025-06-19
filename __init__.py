@@ -1,6 +1,37 @@
+import re
+from ..forall import *
+# Импорт модулей и списков функций из соответствующих подпакетов
 from .mtx import *
 
-# Тема -> Функция -> Задание
+# Словарь, сопоставляющий названия тем со списками функций
+files_dict ={
+    'Задания с матрицами' : MTX
+    
+}
+
+
+# Получение списков названий тем и соответствующих модулей (списков функций)
+names = list(files_dict.keys())
+modules = list(files_dict.values())
+
+# Создание словарей функций для каждой темы
+# funcs_dicts: {описание_задачи: функция}
+funcs_dicts = [dict([(get_task_from_func(i), i) for i in module]) for module in modules]
+# funcs_dicts_ts: {описание_задачи_без_пробелов_и_переносов: функция} (ts - to_search)
+funcs_dicts_ts = [dict([(get_task_from_func(i,True), i) for i in module]) for module in modules]
+# funcs_dicts_full: {имя_функции: исходный_код_функции}
+funcs_dicts_full = [dict([(i.__name__, getsource(i)) for i in module]) for module in modules]
+# funcs_dicts_full_nd: {имя_функции: исходный_код_функции_без_документации}
+funcs_dicts_full_nd = [dict([(i.__name__, getsource_no_docstring(i)) for i in module]) for module in modules]
+
+# Создание словарей, группирующих функции по темам
+themes_list_funcs = dict([(names[i],list(funcs_dicts[i].values()) ) for i in range(len(names))])        # Название темы : список функций по теме
+themes_list_dicts = dict([(names[i],funcs_dicts[i]) for i in range(len(names))])                        # Название темы : словарь по теме, где ЗАДАНИЕ: ФУНКЦИИ
+themes_list_dicts_full = dict([(names[i],funcs_dicts_full[i]) for i in range(len(names))])              # Название темы : словарь по теме, где НАЗВАНИЕ ФУНКЦИИ: ТЕКСТ ФУНКЦИИ
+themes_list_dicts_full_nd = dict([(names[i],funcs_dicts_full_nd[i]) for i in range(len(names))])        # Название темы : словарь по теме, где НАЗВАНИЕ ФУНКЦИИ: ТЕКСТ ФУНКЦИИ БЕЗ ДОКУМЕНТАЦИИ
+
+
+
 def description(
     dict_to_show=themes_list_funcs,
     key=None,
@@ -119,3 +150,81 @@ def description(
     if to_print == True:
         return print(text)
     return text
+
+
+
+def search(query: str, to_print: bool = True, data: str = description(n_symbols=10000, to_print=False)):
+    """
+    Выполняет поиск совпадений по запросу в структурированных данных тем и функций.
+
+    Parameters
+    ----------
+    query : str
+        Строка для поиска. Искать можно по части слова или фразы.
+    to_print : bool, optional
+        Если True - результаты выводятся через print(). По умолчанию True.
+    data : str, optional
+        Исходные данные для поиска в формате, возвращаемом функцией description().
+        По умолчанию вызывает description(n_symbols=10000, to_print=False).
+
+    Returns
+    -------
+    list or None
+        При to_print=True: выводит результаты построчно через print()
+        При to_print=False: возвращает список строк в формате "Тема : Описание"
+
+    Notes
+    -----
+    1. Функция чувствительна к структуре входных данных:
+       - Темы должны быть разделены двойными переносами строк
+       - Каждая тема должна начинаться с заголовка в формате "Название_темы:"
+       - Функции внутри темы должны быть в формате "имя_функции: описание"
+    2. Поиск регистронезависимый
+    3. Рекомендуется использовать n_symbols=10000 при вызове description() 
+       для сохранения полноты описаний
+
+    Examples
+    --------
+    >>> search("обработка данных")
+    math_operations : Очистка данных от пропусков...
+    data_processing : Обработка данных с помощью pandas...
+
+    >>> search("ML", to_print=False)
+    ['ai_tools : Машинное обучение с использованием sklearn', 
+     'deep_learning : Реализация нейронных сетей']
+
+    >>> search("API", data="custom_data_string")
+    api_calls : Выполнение GET-запросов к REST API
+
+    References
+    ----------
+    .. [1] Внутренняя документация проекта, описывающая структуру тем и функций
+    .. [2] Python Software Foundation. "Python Language Reference", version 3.11.
+    """
+    # Разделение входных данных на отдельные темы
+    topics = re.split(r'\n\s*\n', data)
+    matches = []
+
+    for topic_data in topics:
+        # Пропуск пустых блоков тем
+        if not topic_data.strip():
+            continue
+
+        topic_match = re.match(r'^\s*(.*?):', topic_data)
+        if not topic_match:
+            continue
+        
+        # Извлечение названия темы
+        topic = topic_match.group(1).strip()
+        # Поиск всех функций и их описаний в текущей теме
+        functions = re.findall(r'(\w+)\s*:\s*([\s\S]*?)(?=\n\s*\w+\s*:|\Z)', topic_data)
+
+        for func, description in functions:
+            # Проверка наличия запроса (без учета регистра) в описании функции
+            if query.lower() in description.lower():
+                matches.append(f"{topic} : {description.strip()}")
+    
+    # Вывод результатов или их возврат списком
+    if to_print:
+        return print("\n".join(matches))
+    return matches
