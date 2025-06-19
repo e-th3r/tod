@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import re
 from ..forall import *
 # Импорт модулей и списков функций из соответствующих подпакетов
@@ -228,3 +229,6 @@ def search(query: str, to_print: bool = True, data: str = description(n_symbols=
     if to_print:
         return print("\n".join(matches))
     return matches
+=======
+from .tod import *
+>>>>>>> c3fcc7a3a3ddeb127fb8243bd34dbd4ecf811f8d
